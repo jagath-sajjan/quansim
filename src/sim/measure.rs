@@ -1,9 +1,11 @@
-use rand::{RngExt, rng};
+use rand::Rng;
+use rand::thread_rng;
+
 use super::state::QuantumState;
 
 pub fn measure(state: &QuantumState) -> usize {
-    let mut rng = rng();
-    let r: f64 = rng.random();
+    let mut rng = thread_rng();
+    let r: f64 = rng.r#gen();
 
     let mut cumulative = 0.0;
 
