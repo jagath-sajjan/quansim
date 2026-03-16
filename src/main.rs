@@ -1,3 +1,8 @@
+mod sim;
+mod ui;
+mod stats;
+mod circuit;
+
 fn main() {
-    println!("Hello, world!");
+    println!("QuanSim starting....");
 }
