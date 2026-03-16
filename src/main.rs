@@ -1,16 +1,24 @@
-use sim::state::QuantumState;
+#![allow(warnings)]
 
 mod sim;
 mod ui;
 mod stats;
 mod circuit;
 
+use sim::state::QuantumState;
+use sim::gates::*;
+
 fn main() {
-    let state = QuantumState::new(3);
+    let mut state = QuantumState::new(2);
 
-    println!("qubits: {}", state.qubits);
-    println!("dimension: {}", state.dimension());
-    println!("memory: {}", state.memory_bytes());
+    println!("Initial state:");
+    state.print_state();
 
+    println!("\nApply H on qubit 0");
+    hadmard(&mut state, 0);
+    state.print_state();
+
+    println!("\nApply CNOT (0 -> 1)");
+    cnot(&mut state, 0, 1);
     state.print_state();
 }
