@@ -8,7 +8,6 @@ pub struct CircuitBuilder {
 }
 
 impl CircuitBuilder {
-
     pub fn new(qubits: usize) -> Self {
         Self {
             circuit: Circuit::new(qubits),
@@ -28,7 +27,6 @@ impl CircuitBuilder {
     }
 
     pub fn run(&self) -> QuantumState {
-
         let mut state = QuantumState::new(self.circuit.qubits);
 
         for gate in &self.circuit.gates {
@@ -40,5 +38,9 @@ impl CircuitBuilder {
         }
 
         state
+    }
+
+    pub fn circuit(&self) -> &Circuit {
+        &self.circuit
     }
 }

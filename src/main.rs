@@ -2,26 +2,25 @@ mod sim;
 mod stats;
 mod circuit;
 
-use std::result;
-
 use circuit::builder::CircuitBuilder;
 use sim::measure::measure;
 use sim::probabilities::probabilities;
-use sim::shots::run_shots;
-
-use crate::sim::state;
 
 fn main() {
-    let mut circuit = CircuitBuilder::new(2);
 
-    circuit.h(0);
-    circuit.cx(0, 1);
+    let mut builder = CircuitBuilder::new(2);
 
-    let state = circuit.run();
+    builder.h(0);
+    builder.cx(0, 1);
+
+    println!("Circuit:");
+    println!("{}", builder.circuit().draw());
+
+    let state = builder.run();
 
     println!("Quantum State:");
     for (i, amp) in state.amplitudes.iter().enumerate() {
-        println!("|{:02b}> {}", i, amp);
+        println!("|{:02b}> {}+{}i", i, amp.re, amp.im);
     }
 
     println!("\nProbabilities:");
@@ -29,13 +28,6 @@ fn main() {
 
     for (i, p) in probs.iter().enumerate() {
         println!("|{:02b}> {:.3}", i, p);
-    }
-
-    println!("\nShot Sampling");
-    let results = run_shots(&state, 1000);
-
-    for (state, count) in results {
-        println!("|{:02b}> {}", state, count);
     }
 
     let result = measure(&state);
