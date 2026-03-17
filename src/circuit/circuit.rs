@@ -3,6 +3,9 @@ pub enum Gate {
     H(usize),
     X(usize),
     CNOT(usize, usize),
+    RX(usize, f64),
+    RY(usize, f64),
+    RZ(usize, f64),
 }
 
 pub struct Circuit {
@@ -51,6 +54,36 @@ impl Circuit {
                             lines[i].push("──X──".to_string());
                         } else {
                             lines[i].push("──│──".to_string());
+                        }
+                    }
+                }
+
+                Gate::RX(q, _) => {
+                    for i in 0..self.qubits {
+                        if i == *q {
+                            lines[i].push("─RX─".to_string());
+                        } else {
+                            lines[i].push("────".to_string());
+                        }
+                    }
+                }
+
+                Gate::RY(q, _) => {
+                    for i in 0..self.qubits {
+                        if i == *q {
+                            lines[i].push("─RY─".to_string());
+                        } else {
+                            lines[i].push("────".to_string());
+                        }
+                    }
+                }
+
+                Gate::RZ(q, _) => {
+                    for i in 0..self.qubits {
+                        if i == *q {
+                            lines[i].push("─RZ─".to_string());
+                        } else {
+                            lines[i].push("────".to_string());
                         }
                     }
                 }

@@ -26,6 +26,18 @@ impl CircuitBuilder {
         self.circuit.gates.push(Gate::CNOT(control, target));
     }
 
+    pub fn rx(&mut self, target: usize, theta: f64) {
+        self.circuit.gates.push(Gate::RX(target, theta));
+    }
+
+    pub fn ry(&mut self, target: usize, theta: f64) {
+        self.circuit.gates.push(Gate::RY(target, theta));
+    }
+
+    pub fn rz(&mut self, target: usize, theta: f64) {
+        self.circuit.gates.push(Gate::RZ(target, theta));
+    }
+
     pub fn run(&self) -> QuantumState {
         let mut state = QuantumState::new(self.circuit.qubits);
 
@@ -34,6 +46,9 @@ impl CircuitBuilder {
                 Gate::H(q) => hadamard(&mut state, *q),
                 Gate::X(q) => x(&mut state, *q),
                 Gate::CNOT(c, t) => cnot(&mut state, *c, *t),
+                Gate::RX(_, _) => {}, // implement rotation math later
+                Gate::RY(_, _) => {},
+                Gate::RZ(_, _) => {},
             }
         }
 
