@@ -1,5 +1,5 @@
 use super::state::QuantumState;
-use num_complex::{Complex64, ComplexFloat};
+use num_complex::Complex64;
 
 pub fn hadamard(state: &mut QuantumState, target: usize) {
     let n = state.amplitudes.len();
