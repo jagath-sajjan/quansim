@@ -4,14 +4,12 @@ use num_complex::Complex64;
 pub fn hadamard(state: &mut QuantumState, target: usize) {
     let n = state.amplitudes.len();
     let step = 1 << target;
-
     let inv_sqrt2 = 1.0 / (2.0_f64).sqrt();
 
     for i in (0..n).step_by(step * 2) {
         for j in 0..step {
             let a = state.amplitudes[i + j];
             let b = state.amplitudes[i + j + step];
-
             state.amplitudes[i + j] = (a + b) * inv_sqrt2;
             state.amplitudes[i + j + step] = (a - b) * inv_sqrt2;
         }
@@ -35,7 +33,6 @@ pub fn cnot(state: &mut QuantumState, control: usize, target: usize) {
     for i in 0..n {
         if ((i >> control) & 1) == 1 {
             let flipped = i ^ (1 << target);
-
             if i < flipped {
                 state.amplitudes.swap(i, flipped);
             }
@@ -54,7 +51,7 @@ pub fn rx(state: &mut QuantumState, target: usize, theta: f64) {
             let a = state.amplitudes[i + j];
             let b = state.amplitudes[i + j + step];
             state.amplitudes[i + j] = a * cos - b * Complex64::new(0.0, sin);
-            state.amplitudes[i + j +  step] = b * cos - a * Complex64::new(0.0, sin);
+            state.amplitudes[i + j + step] = b * cos - a * Complex64::new(0.0, sin);
         }
     }
 }
@@ -62,13 +59,15 @@ pub fn rx(state: &mut QuantumState, target: usize, theta: f64) {
 pub fn ry(state: &mut QuantumState, target: usize, theta: f64) {
     let n = state.amplitudes.len();
     let step = 1 << target;
-    let neg = Complex64::new(0.0, -theta / 2.0).exp();
-    let pos = Complex64::new(0.0, theta / 2.0).exp();
+    let cos = (theta / 2.0).cos();
+    let sin = (theta / 2.0).sin();
 
     for i in (0..n).step_by(step * 2) {
         for j in 0..step {
-            state.amplitudes[i + j] *= neg;
-            state.amplitudes[i + j + step] *= pos;
+            let a = state.amplitudes[i + j];
+            let b = state.amplitudes[i + j + step];
+            state.amplitudes[i + j] = a * cos - b * sin;
+            state.amplitudes[i + j + step] = a * sin + b * cos;
         }
     }
 }
@@ -83,6 +82,58 @@ pub fn rz(state: &mut QuantumState, target: usize, theta: f64) {
         for j in 0..step {
             state.amplitudes[i + j] *= neg;
             state.amplitudes[i + j + step] *= pos;
+        }
+    }
+}
+
+pub fn crx(state: &mut QuantumState, control: usize, target: usize, theta: f64) {
+    let n = state.amplitudes.len();
+    let step = 1 << target;
+    let cos = (theta / 2.0).cos();
+    let sin = (theta / 2.0).sin();
+
+    for i in (0..n).step_by(step * 2) {
+        for j in 0..step {
+            if ((i + j) >> control) & 1 == 1 {
+                let a = state.amplitudes[i + j];
+                let b = state.amplitudes[i + j + step];
+                state.amplitudes[i + j] = a * cos - b * Complex64::new(0.0, sin);
+                state.amplitudes[i + j + step] = b * cos - a * Complex64::new(0.0, sin);
+            }
+        }
+    }
+}
+
+pub fn cry(state: &mut QuantumState, control: usize, target: usize, theta: f64) {
+    let n = state.amplitudes.len();
+    let step = 1 << target;
+    let cos = (theta / 2.0).cos();
+    let sin = (theta / 2.0).sin();
+
+    for i in (0..n).step_by(step * 2) {
+        for j in 0..step {
+            if ((i + j) >> control) & 1 == 1 {
+                let a = state.amplitudes[i + j];
+                let b = state.amplitudes[i + j + step];
+                state.amplitudes[i + j] = a * cos - b * sin;
+                state.amplitudes[i + j + step] = a * sin + b * cos;
+            }
+        }
+    }
+}
+
+pub fn crz(state: &mut QuantumState, control: usize, target: usize, theta: f64) {
+    let n = state.amplitudes.len();
+    let step = 1 << target;
+    let neg = Complex64::new(0.0, -theta / 2.0).exp();
+    let pos = Complex64::new(0.0, theta / 2.0).exp();
+
+    for i in (0..n).step_by(step * 2) {
+        for j in 0..step {
+            if ((i + j) >> control) & 1 == 1 {
+                state.amplitudes[i + j] *= neg;
+                state.amplitudes[i + j + step] *= pos;
+            }
         }
     }
 }
@@ -143,4 +194,13 @@ pub fn s(state: &mut QuantumState, target: usize) {
 
 pub fn t(state: &mut QuantumState, target: usize) {
     phase(state, target, std::f64::consts::FRAC_PI_4);
+}
+
+pub fn normalize(state: &mut QuantumState) {
+    let norm: f64 = state.amplitudes.iter().map(|a| a.norm_sqr()).sum::<f64>().sqrt();
+    if (norm - 1.0).abs() > 1e-10 {
+        for amp in state.amplitudes.iter_mut() {
+            *amp /= norm;
+        }
+    }
 }
