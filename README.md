@@ -1,6 +1,7 @@
 # quansim
 
-a quantum circuit simulator written in rust runs entirely on your machine no quantum hardware needed
+a quantum circuit simulator written in rust runs entirely on your machine no quantum hardware needed.
+you can access the docs here: https://brewaway.gitbook.io/quansim-docs
 
 ## what it does
 
