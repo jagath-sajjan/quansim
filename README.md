@@ -1,29 +1,36 @@
 # quansim
 
-a quantum circuit simulator written in rust runs entirely on your machine no quantum hardware needed.
-you can access the docs here: https://brewaway.gitbook.io/quansim-docs
+A quantum circuit simulator written in Rust, runs entirely on your machine, no quantum hardware needed.
 
-## what it does
+📖 [Documentation](https://brewaway.gitbook.io/quansim-docs)
 
-simulates quantum circuits using a full complex amplitude state vector supports gates measurement algorithms and noise models exports to openqasm 2.0 which is readable by real quantum computers like ibm quantum
+---
 
-## install
+## What it does
 
-```
+Simulates quantum circuits using a full complex amplitude state vector. Supports gates, measurement, algorithms, and noise models. Exports to OpenQASM 2.0, which is readable by real quantum computers like IBM Quantum.
+
+---
+
+## Install
+
+```bash
 git clone https://github.com/jagath-sajjan/quansim
 cd quansim
 cargo build --release
 ```
 
-## usage
+---
 
-### interactive repl
+## Usage
 
-```
+### Interactive REPL
+
+```bash
 cargo run
 ```
 
-type gates and commands live see state update in real time type `help` for all commands
+Type gates and commands live, see state update in real time. Type `help` for all commands.
 
 ```
 q[2]> h 0
@@ -33,9 +40,9 @@ q[2]> shots 1000
 q[2]> qasm
 ```
 
-### demos
+### Demos
 
-```
+```bash
 cargo run -- demo bell
 cargo run -- demo ghz 4
 cargo run -- demo grover 3 5
@@ -43,41 +50,51 @@ cargo run -- demo qft 3
 cargo run -- demo teleport
 ```
 
-### run a qasm file
+### Run a QASM file
 
-```
+```bash
 cargo run -- run circuit.qasm
 ```
 
-## gates
+---
 
-single qubit: H X S T RX RY RZ Phase
+## Gates
 
-two qubit: CNOT CZ SWAP CRX CRY CRZ
+| Type        | Gates                              |
+|-------------|------------------------------------|
+| Single qubit | H, X, S, T, RX, RY, RZ, Phase    |
+| Two qubit   | CNOT, CZ, SWAP, CRX, CRY, CRZ     |
+| Three qubit | Toffoli                            |
 
-three qubit: Toffoli
+---
 
-## algorithms
+## Algorithms
 
-- quantum fourier transform and inverse qft
-- grovers search algorithm
-- quantum teleportation
+- Quantum Fourier Transform (QFT) and inverse QFT
+- Grover's search algorithm
+- Quantum teleportation
 
-## analysis
+---
 
-- full state vector amplitudes
-- probability distributions
-- single shot and multi shot measurement
-- expectation values X Y Z per qubit
-- state fidelity between two states
-- density matrix purity and trace
-- circuit depth and gate count
-- depolarizing bit flip and phase flip noise
+## Analysis
 
-## qubit limit
+- Full state vector amplitudes
+- Probability distributions
+- Single shot and multi shot measurement
+- Expectation values (X, Y, Z) per qubit
+- State fidelity between two states
+- Density matrix purity and trace
+- Circuit depth and gate count
+- Depolarizing, bit flip, and phase flip noise models
 
-around 28 qubits before memory becomes a constraint on a standard machine a 15 qubit circuit uses about 512kb of ram
+---
 
-## dependencies
+## Qubit limit
 
-num-complex rand rayon crossterm indicatif sysinfo
+Around **28 qubits** before memory becomes a constraint on a standard machine. A 15 qubit circuit uses approximately 512 KB of RAM.
+
+---
+
+## Dependencies
+
+`num-complex` · `rand` · `rayon` · `crossterm` · `indicatif` · `sysinfo`
