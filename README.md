@@ -4,6 +4,9 @@ A quantum circuit simulator written in Rust, runs entirely on your machine, no q
 
 📖 [Documentation](https://brewaway.gitbook.io/quansim-docs)
 
+# VIDEOOOO DEMOOOOOOOOOOO:
+https://youtu.be/u6PiWiPgVqI
+
 ---
 
 ## What it does
